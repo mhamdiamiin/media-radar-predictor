@@ -1,24 +1,28 @@
 import time
-
-from process_1_scout import run_sitemap_scout
-from process_2_sweeper import run_bulk_sweeper
+from app.controllers.scout_controller import ScoutController
+from app.controllers.sweeper_controller import SweeperController
+from app.controllers.nlp_controller import run_nlp_pipeline
+from app.views.console_view import ConsoleView
 
 
 def main():
-    print("=" * 56)
-    print("  MEDIA RADAR — MOSAIQUE FM INGESTION PIPELINE")
-    print("=" * 56)
+    view = ConsoleView()
+    scout = ScoutController()
+    sweeper = SweeperController()
+
+    view.print_header()
 
     start = time.time()
-    new_articles = run_sitemap_scout()
-    run_bulk_sweeper()
+
+    new_articles = scout.run()
+    sweeper.run()
+
+    print("\n=== Phase 3: NLP Pipeline ===")
+    run_nlp_pipeline()
 
     elapsed = time.time() - start
-    print("=" * 56)
-    print(f"  PIPELINE COMPLETE")
-    print(f"  New articles this run : {new_articles}")
-    print(f"  Total duration        : {elapsed:.2f}s")
-    print("=" * 56)
+
+    view.print_footer(new_articles, elapsed)
 
 
 if __name__ == "__main__":
