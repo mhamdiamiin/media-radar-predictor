@@ -2,6 +2,7 @@ import time
 from app.controllers.scout_controller import ScoutController
 from app.controllers.sweeper_controller import SweeperController
 from app.controllers.nlp_controller import run_nlp_pipeline
+from app.controllers.clustering_controller import run_clustering_pipeline
 from app.views.console_view import ConsoleView
 
 
@@ -19,6 +20,9 @@ def main():
 
     print("\n=== Phase 3: NLP Pipeline ===")
     run_nlp_pipeline()
+
+    print("\n=== Phase 4: Clustering ===")
+    run_clustering_pipeline()
 
     elapsed = time.time() - start
 

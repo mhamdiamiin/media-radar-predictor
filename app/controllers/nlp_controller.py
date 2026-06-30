@@ -4,6 +4,7 @@ from app.utils.keywords import extract_keywords
 from app.utils.entities import extract_entities
 from app.utils.embeddings import generate_embedding
 from datetime import datetime, timezone
+from app.utils.category_classifier import classify_category
 
 
 def run_nlp_pipeline():
@@ -30,6 +31,7 @@ def run_nlp_pipeline():
             keywords   = extract_keywords(title, description, tags)
             entities   = extract_entities(title, description)
             embedding  = generate_embedding(description)
+            category_normalized = classify_category(article.get("category", ""))
 
             # Update MongoDB document
             articles_collection.update_one(
@@ -40,7 +42,8 @@ def run_nlp_pipeline():
                     "nlp.entities":   entities,
                     "nlp.embedding":  embedding,
                     "status":         "nlp_done",
-                    "nlp_processed_at": datetime.now(timezone.utc)
+                    "nlp_processed_at": datetime.now(timezone.utc),
+                    "category_normalized": category_normalized
                 }}
             )
             success += 1

@@ -67,10 +67,13 @@ class ScoutController:
                     "sentiment": None,
                     "embedding": [],
                 },
+                "category_normalized": None,
                 "tendance": {
                     "score": 0.0,
                     "velocity": 0.0,
                     "cluster_id": None,
+                    "cluster_age_days": None,
+                    "label": None, 
                     "is_emerging": False,
                     "score_history": [],
                 },
