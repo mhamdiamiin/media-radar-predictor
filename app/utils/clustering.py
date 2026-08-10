@@ -167,7 +167,6 @@ def assign_new_article(article):
         best_cluster_id = _create_new_cluster_id()
         label = None
 
-    # Update MongoDB
     articles_collection.update_one(
         {"_id": article["_id"]},
         {"$set": {

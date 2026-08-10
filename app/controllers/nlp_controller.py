@@ -31,7 +31,7 @@ def run_nlp_pipeline():
             keywords   = extract_keywords(title, description, tags)
             entities   = extract_entities(title, description)
             embedding  = generate_embedding(description)
-            category_normalized = classify_category(article.get("category", ""))
+            category_normalized = classify_category(article.get("category", ""), description)
 
             # Update MongoDB document
             articles_collection.update_one(

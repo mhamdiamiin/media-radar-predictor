@@ -63,3 +63,51 @@ SLUG_KEYWORDS = {
 CLUSTER_SIMILARITY_THRESHOLD = 0.80  # cosine similarity to join existing cluster
 MIMIC_WINDOW_DAYS = 7
 REVISIT_WINDOW_DAYS = 30
+
+TREND_THRESHOLD    = 0.55
+FIDDLING_THRESHOLD = 0.65   # same value — below this = fiddling
+
+ALERT_THRESHOLD = 0.65
+
+GOOGLE_TRENDS_TIMEFRAME = "now 1-d"   # last 24 hours
+GOOGLE_TRENDS_GEO       = "TN"        # Tunisia
+
+SCORE_REVIEW_PROMPT = """
+Tu es un expert en analyse des tendances médiatiques tunisiennes.
+
+Un système automatique a attribué un score de tendance à cet article publié par Mosaique FM.
+Ce score représente la probabilité que l'article devienne viral auprès du grand public tunisien (0 = jamais viral, 1 = certainement viral).
+
+Ton rôle est de revoir ce score et de le corriger si nécessaire.
+
+Titre: {title}
+Description: {description}
+Catégorie: {category}
+Score actuel: {score}
+Nouveauté du sujet: {novelty}
+Taille du cluster: {cluster_size}
+
+Critères pour AUGMENTER le score:
+- Événement choquant ou historique (record battu, élimination surprise, catastrophe, première fois)
+- Forte réaction émotionnelle attendue du public tunisien
+- Implique l'équipe nationale tunisienne ou une star mondiale connue en Tunisie
+- Sujet complètement nouveau jamais vu dans les actualités récentes
+- Résultat inattendu qui va à l'encontre des prévisions
+
+Critères pour BAISSER le score:
+- Programme ou calendrier de matchs (aucune valeur informationnelle forte)
+- Nomination administrative interne à un club local
+- Compétition que le public tunisien ne suit pas
+- Article de routine sans surprise ni émotion
+- Résultat attendu sans aucun élément choquant
+- IMPORTANT: Si le sujet a déjà été largement couvert (cluster_size > 3), 
+  cet article n'apporte rien de nouveau — baisser significativement le score
+- IMPORTANT: Si novelty = "ancien sujet", le topic existait déjà — ce n'est pas une tendance émergente
+
+Réponds UNIQUEMENT avec ce format JSON exact:
+{{
+    "revised_score": 0.0-1.0,
+    "changed": true/false,
+    "reason": "une phrase courte expliquant ton ajustement"
+}}
+"""
