@@ -1,0 +1,30 @@
+# Core configuration and scheduling
+python-dotenv
+APScheduler
+
+# Data collection and storage
+requests
+scrapling
+pymongo
+
+# NLP, embeddings, clustering, and trend analysis
+transformers
+sentence-transformers
+KeyBERT
+spacy
+numpy
+scikit-learn
+hdbscan
+pytrends
+
+# Mistral-powered classification and score review
+mistralai
+
+# API
+fastapi
+uvicorn[standard]
+
+# Dashboard
+streamlit
+pandas
+plotly
